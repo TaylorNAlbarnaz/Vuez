@@ -6,9 +6,15 @@
   >
     <v-list>
       <v-list-item
-        prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
-        title="Sandra Adams"
-        subtitle="sandra_a88@gmailcom"
+        v-if="login"
+        :prepend-avatar="picture"
+        :title="name"
+        :subtitle="email"
+      ></v-list-item>
+
+      <v-list-item
+        v-else
+        prepend-icon="mdi-account"
       ></v-list-item>
     </v-list>
 
@@ -20,7 +26,7 @@
 
     <template v-slot:append>
       <v-list class="item-list" density="compact" nav>
-        <SidebarButton icon="mdi-power" title="Desconectar"/>
+        <SidebarButton @click="$emit('logoff')" icon="mdi-power" title="Desconectar"/>
       </v-list>
     </template>
   </v-navigation-drawer>
@@ -31,8 +37,27 @@ import SidebarButton from './SidebarButton.vue';
 
 export default {
   name: 'Sidebar',
+  
   components: {
     SidebarButton
+  },
+
+  data: () => ({
+    picture: '',
+    name: '',
+    email: ''
+  }),
+
+  props: {
+    login: Object
+  },
+
+  watch: {
+    login: function(newLogin) {
+      this.picture = newLogin ? newLogin.picture :''
+      this.name = newLogin ? newLogin.name :''
+      this.email = newLogin ? newLogin.email :''
+    }
   }
 }
 </script>
