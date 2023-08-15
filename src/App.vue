@@ -2,10 +2,10 @@
   <v-app>
     <v-layout>
       <Sidebar>
-        <v-list-item prepend-icon="mdi-currency-usd" title="Vender" value="sell"></v-list-item>
-        <v-list-item prepend-icon="mdi-cart" title="Minhas vendas" value="sales"></v-list-item>
-        <v-list-item prepend-icon="mdi-account" title="Clientes" value="clients"></v-list-item>
-        <v-list-item prepend-icon="mdi-package" title="Produtos" value="products"></v-list-item>
+        <SidebarButton icon="mdi-cart" title="Minhas Vendas" value=""/>
+        <SidebarButton icon="mdi-currency-usd" title="Vender" value="sell"/>
+        <SidebarButton icon="mdi-account" title="Clientes" value="clients"/>
+        <SidebarButton icon="mdi-package" title="Produtos" value="products"/>
       </Sidebar>
 
       <v-main>
@@ -17,12 +17,14 @@
 
 <script>
 import Sidebar from './components/Sidebar.vue'
+import SidebarButton from './components/SidebarButton.vue';
 
 export default {
   name: 'App',
 
   components: {
-    Sidebar
+    Sidebar,
+    SidebarButton
   },
 
   data: () => ({
@@ -30,3 +32,12 @@ export default {
   }),
 }
 </script>
+
+<style lang="stylus">
+  *
+    border: 0
+    padding: 0
+    margin: 0
+    box-sizing: border-box
+    text-decoration: none
+</style>

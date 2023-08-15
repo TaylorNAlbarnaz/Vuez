@@ -20,19 +20,20 @@
 
     <template v-slot:append>
       <v-list class="item-list" density="compact" nav>
-        <v-list-item 
-          prepend-icon="mdi-power" 
-          title="Desconectar" 
-          value="signoff"
-        ></v-list-item>
+        <SidebarButton icon="mdi-power" title="Desconectar"/>
       </v-list>
     </template>
   </v-navigation-drawer>
 </template>
 
 <script>
+import SidebarButton from './SidebarButton.vue';
+
 export default {
-  name: 'Sidebar'
+  name: 'Sidebar',
+  components: {
+    SidebarButton
+  }
 }
 </script>
 
