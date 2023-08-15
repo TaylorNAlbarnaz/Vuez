@@ -48,11 +48,11 @@ export default {
   }),
 
   methods: {
-    loginWithEmail: async function(email) {
+    loginWithEmail: async function(email, password) {
       const controller = new SellerController();
       const sellers = await controller.getAllSellers();
 
-      const login = sellers.find(s => s.email == email);
+      const login = sellers.find(s => s.email == email && s.password == password);
       if (login) {
         this.login = login;
         this.loginDialog = false;

@@ -13,12 +13,24 @@
       >
         <v-text-field
           density="compact"
-          placeholder="Email address"
+          placeholder="Email"
+          :rules="[rules.required]"
           prepend-inner-icon="mdi-email-outline"
           variant="outlined"
           v-model="email"
         ></v-text-field>
-        <v-card-actions>   
+
+        <v-text-field
+          density="compact"
+          placeholder="Senha"
+          :rules="[rules.required, rules.min]"
+          prepend-inner-icon="mdi-lock"
+          variant="outlined"
+          v-model="password"
+          type="password"
+        ></v-text-field>
+        
+        <v-card-actions>
           <v-btn
             block
             variant="elevated"
@@ -38,7 +50,12 @@
 
     data: () => ({
       dialog: true,
-      email: ''
+      email: '',
+      password: '',
+      rules: {
+        required: value => !!value || 'Obrigatório!',
+        min: v => v.length >= 8 || 'Precisa ter ao menos 8 caracteres'
+      }
     }),
 
     props: {
@@ -50,7 +67,11 @@
 
     setup: (props, { emit }) => {
       function login() {
-        emit('login', this.email)
+        emit('login', this.email, this.password)
+        setTimeout(() => {
+          this.email = ''
+          this.password = ''
+        }, 1000)
       }
 
       return {

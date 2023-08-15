@@ -1,6 +1,6 @@
 {
      "sellers": [
-          {"id": 1, "name": "Fulano", "email": "login@email.com", "picture": "https://randomuser.me/api/portraits/women/85.jpg"}
+          {"id": 1, "name": "Fulano", "email": "login@email.com", "password": "12345678", "picture": "https://randomuser.me/api/portraits/women/85.jpg"}
      ],
      "clients": [
           {"id": 1, "name": "Ciclano", "cpf": "000.000.000-00"}
