@@ -1,5 +1,7 @@
 <template>
-  Olá
+  <div class="test">
+    hello world
+  </div>
 </template>
 
 <script>
@@ -9,3 +11,7 @@ export default defineComponent({
   name: 'HomeView',
 });
 </script>
+
+<style lang="stylus" scoped>
+  
+</style>

@@ -2,6 +2,7 @@
   <v-navigation-drawer
     expand-on-hover
     rail
+    app
   >
     <v-list>
       <v-list-item
@@ -13,9 +14,19 @@
 
     <v-divider></v-divider>
 
-    <v-list density="compact" nav>
+    <v-list class="item-list" density="compact" nav>
       <slot></slot>
     </v-list>
+
+    <template v-slot:append>
+      <v-list class="item-list" density="compact" nav>
+        <v-list-item 
+          prepend-icon="mdi-power" 
+          title="Desconectar" 
+          value="signoff"
+        ></v-list-item>
+      </v-list>
+    </template>
   </v-navigation-drawer>
 </template>
 
@@ -24,3 +35,8 @@ export default {
   name: 'Sidebar'
 }
 </script>
+
+<style lang="stylus">
+  .item-list *
+    user-select: none
+</style>

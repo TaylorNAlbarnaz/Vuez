@@ -2,9 +2,10 @@
   <v-app>
     <v-layout>
       <Sidebar>
-        <v-list-item prepend-icon="mdi-folder" title="My Files" value="myfiles"></v-list-item>
-        <v-list-item prepend-icon="mdi-account-multiple" title="Shared with me" value="shared"></v-list-item>
-        <v-list-item prepend-icon="mdi-star" title="Starred" value="starred"></v-list-item>
+        <v-list-item prepend-icon="mdi-currency-usd" title="Vender" value="sell"></v-list-item>
+        <v-list-item prepend-icon="mdi-cart" title="Minhas vendas" value="sales"></v-list-item>
+        <v-list-item prepend-icon="mdi-account" title="Clientes" value="clients"></v-list-item>
+        <v-list-item prepend-icon="mdi-package" title="Produtos" value="products"></v-list-item>
       </Sidebar>
 
       <v-main>
