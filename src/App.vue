@@ -4,7 +4,7 @@
       <LoginDialog
         @login="loginWithEmail"
         :open="loginDialog"
-        v-if="!loginId"
+        v-if="login == null"
       />
 
       <Sidebar
@@ -25,6 +25,8 @@
 </template>
 
 <script>
+import { onMounted, getCurrentInstance } from "vue";
+
 // Controllers
 import SellerController from './controllers/SellerController'
 
@@ -56,13 +58,30 @@ export default {
       if (login) {
         this.login = login;
         this.loginDialog = false;
+        localStorage.setItem('login', JSON.stringify(login));
       }
     },
 
     logoff: function() {
       this.login = null;
       this.loginDialog = true;
+      localStorage.removeItem('login');
     }
+  },
+
+  setup() {
+    onMounted(() => {
+      const data = getCurrentInstance().data;
+      
+      const login = localStorage.getItem('login');
+      if (login) {
+        data.login = JSON.parse(login)
+        data.loginDialog = false;
+      } else {
+        data.login = null;
+        data.loginDialog = true;
+      }
+    })
   }
 }
 </script>
