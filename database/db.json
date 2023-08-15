@@ -1,9 +1,10 @@
 {
      "sellers": [
-          {"id": 1, "name": "Fulano", "email": "login@email.com", "password": "12345678", "picture": "https://randomuser.me/api/portraits/women/85.jpg"}
+          {"id": 1, "name": "Fulano", "email": "fulano@email.com", "password": "12345678", "picture": "https://randomuser.me/api/portraits/men/14.jpg"},
+          {"id": 2, "name": "Ciclano", "email": "ciclano@email.com", "password": "12345678", "picture": "https://randomuser.me/api/portraits/men/19.jpg"}
      ],
      "clients": [
-          {"id": 1, "name": "Ciclano", "cpf": "000.000.000-00"}
+          {"id": 1, "name": "Deltrano", "cpf": "000.000.000-00"}
      ],
      "products": [
           {"id": 1, "name": "Bombom", "price": 5, "totalStock": 200, "currentStock": 199}

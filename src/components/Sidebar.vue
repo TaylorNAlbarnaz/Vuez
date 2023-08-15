@@ -20,13 +20,18 @@
 
     <v-divider></v-divider>
 
-    <v-list class="item-list" density="compact" nav>
+    <v-list
+      class="item-list"
+      density="compact"
+      mandatory
+      nav
+    >
       <slot></slot>
     </v-list>
 
     <template v-slot:append>
       <v-list class="item-list" density="compact" nav>
-        <SidebarButton @click="$emit('logoff')" icon="mdi-power" title="Desconectar"/>
+        <SidebarButton @click="$emit('logoff')" icon="mdi-power" title="Desconectar" color="red"/>
       </v-list>
     </template>
   </v-navigation-drawer>

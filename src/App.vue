@@ -11,10 +11,10 @@
         @logoff="logoff"
         :login="login"
       >
-        <SidebarButton icon="mdi-cart" title="Minhas Vendas" value=""/>
-        <SidebarButton icon="mdi-currency-usd" title="Vender" value="sell"/>
-        <SidebarButton icon="mdi-account" title="Clientes" value="clients"/>
-        <SidebarButton icon="mdi-package" title="Produtos" value="products"/>
+        <SidebarButton title="Minhas Vendas" value="" color="lime" icon="mdi-cart" />
+        <SidebarButton title="Vender" value="sell" color="green" icon="mdi-currency-usd"/>
+        <SidebarButton title="Clientes" value="clients" color="blue" icon="mdi-account"/>
+        <SidebarButton title="Produtos" value="products" color="orange" icon="mdi-package"/>
       </Sidebar>
 
       <v-main>

@@ -1,8 +1,8 @@
 <template>
   <router-link v-if="value" :to="value" class="button">
-    <v-list-item :prepend-icon="icon" :title="title" :value="value"></v-list-item>
+    <v-list-item :prepend-icon="icon" :title="title" :value="value" :color="color"></v-list-item>
   </router-link>
-  <v-list-item v-else :prepend-icon="icon" :title="title" value="none"></v-list-item>
+  <v-list-item v-else :prepend-icon="icon" :title="title" value="none" :color="color"></v-list-item>
 </template>
 
 <script>
@@ -12,6 +12,7 @@ export default {
     'icon': String,
     'title': String,
     'value': String,
+    'color': String
   }
 }
 </script>
