@@ -9,15 +9,27 @@
       >
         <p class="txt">Vendas Realizadas: {{ totalSales }}</p>
 
-        <v-card>
-          <v-list
-            v-for="sale in sales"
-            :key="sale.id"
-            :value="sale"
-          >
-            <v-list-item-title>{{ sale.name }}</v-list-item-title>
-          </v-list>
-        </v-card>
+        <v-table>
+          <thead>
+            <tr>
+              <th class="text-left">Produto</th>
+              <th class="text-left">Quantidade</th>
+              <th class="text-left">Comprador</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="sale in sales"
+              :key="sale.id"
+              :value="sale"
+              >
+              <td>{{ sale.productName }}</td>
+              <td>{{ sale.quantity }}</td>
+              <td>{{ sale.clientName }}</td>
+            </tr>
+          </tbody>
+        </v-table>
+
       </v-col>
     </v-row>
   </v-container>
@@ -29,6 +41,8 @@
   //Controllers
   import SalesController from './../controllers/SalesController'
   import ProductsController from './../controllers/ProductsController'
+  import OrdersController from './../controllers/OrdersController'
+  import ClientsController from './../controllers/ClientsController'
 
   export default {
     name: 'SalesView',
@@ -43,21 +57,33 @@
         const data = getCurrentInstance().data;
         const salesController = new SalesController();
         const productsController = new ProductsController();
+        const ordersController = new OrdersController();
+        const clientsController = new ClientsController();
 
-        const login = localStorage.getItem('login');
+        const login = JSON.parse(localStorage.getItem('login'));
         if (login) {
-          let sales = await salesController.getSalesFromSeller(login.id);
-          let newSales = []
+          let orders = await ordersController.getOrdersFromSeller(login.id);
 
-          sales.forEach(async s => {
-            const product = await productsController.getProductById(s.productId);
-            //s.name = product.name
-            const newS = {...s, name: product.name}
-            newSales.push(newS)
-            
-            data.sales = newSales;
-            data.totalSales = newSales.length;
-          });
+          data.sales = await Promise.all(
+            orders.map(async o => {
+              let orderData = {};
+
+              await Promise.all(o.saleIds.map(async s => {
+                const sale = await salesController.getSaleById(s);
+                const client = await clientsController.getClientById(o.clientId);
+                const product = await productsController.getProductById(sale.productId);
+                
+                orderData.id = o.id;
+                orderData.productName = product.name;
+                orderData.clientName = client.name;
+                orderData.quantity = sale.quantity;
+
+                data.totalSales++
+              }))
+
+              return orderData;
+            })
+          )
         }
       })
     }
