@@ -58,6 +58,7 @@ export default {
       if (login) {
         this.login = login;
         this.loginDialog = false;
+        this.$router.go();
         localStorage.setItem('login', JSON.stringify(login));
       }
     },
