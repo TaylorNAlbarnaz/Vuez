@@ -1,6 +1,10 @@
 <template>
   <v-app>
     <v-layout>
+      <LoadingOverlay
+        :loading="loading"
+      />
+
       <LoginDialog
         @login="loginWithEmail"
         :open="loginDialog"
@@ -18,7 +22,7 @@
       </Sidebar>
 
       <v-main>
-        <router-view/>
+        <router-view @loading="setLoading"/>
       </v-main>
     </v-layout>
   </v-app>
@@ -34,6 +38,7 @@ import SellerController from './controllers/SellerController'
 import LoginDialog from './components/LoginDialog.vue';
 import Sidebar from './components/Sidebar.vue'
 import SidebarButton from './components/SidebarButton.vue';
+import LoadingOverlay from "./components/LoadingOverlay.vue";
 
 export default {
   name: 'App',
@@ -41,12 +46,14 @@ export default {
   components: {
     LoginDialog,
     Sidebar,
-    SidebarButton
+    SidebarButton,
+    LoadingOverlay
   },
 
   data: () => ({
     login: null,
-    loginDialog: true
+    loginDialog: true,
+    loading: false
   }),
 
   methods: {
@@ -67,6 +74,10 @@ export default {
       this.login = null;
       this.loginDialog = true;
       localStorage.removeItem('login');
+    },
+
+    setLoading: function(isLoading) {
+      this.loading = isLoading;
     }
   },
 

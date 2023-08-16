@@ -52,8 +52,12 @@
       sales: []
     }),
 
+    mounted() {
+      this.$emit('loading', true)
+    },
+
     setup() {
-      onMounted(async () => {
+      onMounted(async function() {
         const data = getCurrentInstance().data;
         const salesController = new SalesController();
         const productsController = new ProductsController();
@@ -86,11 +90,17 @@
           )
         }
       })
+    },
+
+    watch: {
+      sales: function() {
+        this.$emit('loading', false)
+      }
     }
   };
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus">
   .txt
     text-align: center
 </style>
