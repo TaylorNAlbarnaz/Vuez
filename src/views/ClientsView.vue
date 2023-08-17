@@ -7,7 +7,11 @@
         d-flex
         justify-center
       >
-        <p class="txt">Clientes</p>
+        <div class="view-title">
+          <p class="txt">Clientes</p>
+
+          <AddClientScreen/>
+        </div>
 
         <v-table>
           <thead>
@@ -24,7 +28,7 @@
               :value="client"
               >
               <td>{{ client.name }}</td>
-              <td>{{ client.telefone }}</td>
+              <td>{{ client.phone }}</td>
               <td>{{ client.cpf }}</td>
             </tr>
           </tbody>
@@ -41,12 +45,19 @@
   //Controllers
   import ClientsController from './../controllers/ClientsController'
 
+  //Components
+  import AddClientScreen from "@/components/AddClientScreen.vue";
+
   export default {
     name: 'ClientsView',
 
     data: () => ({
       clients: []
     }),
+
+    components: {
+      AddClientScreen
+    },
 
     mounted() {
       this.$emit('loading', true)
@@ -68,3 +79,14 @@
     }
   }
 </script>
+
+<style lang="stylus" scoped>
+  .view-title
+    display: flex
+    justify-content: space-between
+    align-items: center
+    padding: 0 10px
+
+    > p
+      width: 100%
+</style>

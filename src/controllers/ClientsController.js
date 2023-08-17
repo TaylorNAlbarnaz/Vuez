@@ -10,4 +10,9 @@ export default class ClientsController {
           return axios.get('http://localhost:3000/clients/' + clientId)
           .then(res => res.data)
      }
+
+     addClient(client) {
+          return axios.post('http://localhost:3000/clients', {...client})
+          .then(res => res)
+     }
 }

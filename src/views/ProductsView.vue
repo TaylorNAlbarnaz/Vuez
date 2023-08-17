@@ -7,7 +7,11 @@
         d-flex
         justify-center
       >
-        <p class="txt">Produtos</p>
+        <div class="view-title">
+          <p class="txt">Produtos</p>
+
+          <AddProductScreen />
+        </div>
 
         <v-table>
           <thead>
@@ -25,7 +29,7 @@
               :value="product"
               >
               <td>{{ product.name }}</td>
-              <td>{{ product.price }}</td>
+              <td>R$ {{ Number(product.price).toFixed(2) }}</td>
               <td>{{ product.currentStock }}</td>
               <td>{{ product.totalStock }}</td>
             </tr>
@@ -43,12 +47,19 @@
   //Controllers
   import ProductsController from './../controllers/ProductsController'
 
+  //Components
+  import AddProductScreen from "@/components/AddProductScreen.vue";
+
   export default {
     name: 'ProductsView',
 
     data: () => ({
       products: []
     }),
+
+    components: {
+      AddProductScreen
+    },
 
     mounted() {
       this.$emit('loading', true)
@@ -70,3 +81,14 @@
     }
   }
 </script>
+
+<style lang="stylus" scoped>
+  .view-title
+    display: flex
+    justify-content: space-between
+    align-items: center
+    padding: 0 10px
+
+    > p
+      width: 100%
+</style>
