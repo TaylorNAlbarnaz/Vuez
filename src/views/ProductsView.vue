@@ -12,20 +12,22 @@
         <v-table>
           <thead>
             <tr>
-              <th class="text-left">Produto</th>
-              <th class="text-left">Quantidade</th>
-              <th class="text-left">Comprador</th>
+              <th class="text-left">Nome</th>
+              <th class="text-left">Preço</th>
+              <th class="text-left">Estoque Atual</th>
+              <th class="text-left">Estoque Total</th>
             </tr>
           </thead>
           <tbody>
             <tr
-              v-for="sale in sales"
-              :key="sale.id"
-              :value="sale"
+              v-for="product in products"
+              :key="product.id"
+              :value="product"
               >
-              <td>{{ sale.productName }}</td>
-              <td>{{ sale.quantity }}</td>
-              <td>{{ sale.clientName }}</td>
+              <td>{{ product.name }}</td>
+              <td>{{ product.price }}</td>
+              <td>{{ product.currentStock }}</td>
+              <td>{{ product.totalStock }}</td>
             </tr>
           </tbody>
         </v-table>
@@ -36,7 +38,35 @@
 </template>
 
 <script>
-export default {
-  name: 'ProductsView'
-}
+  import { onMounted, getCurrentInstance } from "vue";
+
+  //Controllers
+  import ProductsController from './../controllers/ProductsController'
+
+  export default {
+    name: 'ProductsView',
+
+    data: () => ({
+      products: []
+    }),
+
+    mounted() {
+      this.$emit('loading', true)
+    },
+
+    setup() {
+      onMounted(async function() {
+        const data = getCurrentInstance().data;
+        const productsController = new ProductsController();
+
+        data.products = await productsController.getAllProducts();
+      })
+    },
+    
+    watch: {
+      products: function() {
+        this.$emit('loading', false);
+      }
+    }
+  }
 </script>

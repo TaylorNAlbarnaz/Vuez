@@ -12,20 +12,20 @@
         <v-table>
           <thead>
             <tr>
-              <th class="text-left">Produto</th>
-              <th class="text-left">Quantidade</th>
-              <th class="text-left">Comprador</th>
+              <th class="text-left">Nome</th>
+              <th class="text-left">Telefone</th>
+              <th class="text-left">CPF</th>
             </tr>
           </thead>
           <tbody>
             <tr
-              v-for="sale in sales"
-              :key="sale.id"
-              :value="sale"
+              v-for="client in clients"
+              :key="client.id"
+              :value="client"
               >
-              <td>{{ sale.productName }}</td>
-              <td>{{ sale.quantity }}</td>
-              <td>{{ sale.clientName }}</td>
+              <td>{{ client.name }}</td>
+              <td>{{ client.telefone }}</td>
+              <td>{{ client.cpf }}</td>
             </tr>
           </tbody>
         </v-table>
@@ -36,7 +36,35 @@
 </template>
 
 <script>
-export default {
-  name: 'ClientsView'
-}
+  import { onMounted, getCurrentInstance } from "vue";
+
+  //Controllers
+  import ClientsController from './../controllers/ClientsController'
+
+  export default {
+    name: 'ClientsView',
+
+    data: () => ({
+      clients: []
+    }),
+
+    mounted() {
+      this.$emit('loading', true)
+    },
+
+    setup() {
+      onMounted(async function() {
+        const data = getCurrentInstance().data;
+        const clientsController = new ClientsController();
+
+        data.clients = await clientsController.getAllClients();
+      })
+    },
+    
+    watch: {
+      clients: function() {
+        this.$emit('loading', false);
+      }
+    }
+  }
 </script>

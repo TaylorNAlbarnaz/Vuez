@@ -4,7 +4,7 @@
           {"id": 2, "name": "Ciclano", "email": "ciclano@email.com", "password": "12345678", "picture": "https://randomuser.me/api/portraits/men/19.jpg"}
      ],
      "clients": [
-          {"id": 1, "name": "Deltrano", "cpf": "000.000.000-00"}
+          {"id": 1, "name": "Deltrano", "cpf": "000.000.000-00", "telefone": "(99)99999-9999"}
      ],
      "products": [
           {"id": 1, "name": "Bombom", "price": 5, "totalStock": 200, "currentStock": 199}
