@@ -11,8 +11,16 @@
           <p class="txt">Vender</p>
         </div>
 
-        <SelectClientScreen/>
-        <SelectProductsScreen/>
+        <SelectClientScreen ref="client"/>
+        <SelectProductsScreen ref="products"/>
+
+        <div class="buttons">
+          <v-btn @click="finishSale" color="success">Concluir Venda</v-btn>
+
+          <router-link :to="'/'" class="button">
+            <v-btn color="grey">Cancelar</v-btn>
+          </router-link>
+        </div>
       </v-col>
     </v-row>
   </v-container>
@@ -30,6 +38,12 @@
       SelectClientScreen,
       SelectProductsScreen
     },
+
+    methods: {
+      finishSale() {
+        console.log(this.$refs)
+      },
+    }
   };
 </script>
 
@@ -41,4 +55,12 @@
   .text-left .v-btn__append
     width: 100%
     text-align: right
+</style>
+
+<style lang="stylus" scoped>
+  .buttons
+    display: flex
+    justify-content: center
+    gap: 40px
+    margin-top: 40px
 </style>

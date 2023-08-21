@@ -2,13 +2,13 @@
   <div class="client-input" v-ripple>
     <v-input
       prepend-icon="mdi-account"
-      :append-icon="clientName ? 'mdi-delete' : ''"
+      :append-icon="client ? 'mdi-delete' : ''"
       hide-details
       @click:append="resetClient"
     >
       <p @click="openClientSelection">
-        {{ clientName ? clientName : 'Selecione um cliente' }}
-        <span> {{ clientName ? `(${clientCPF})` : '' }}</span>
+        {{ client ? client.name : 'Selecione um cliente' }}
+        <span> {{ client ? `(${client.cpf})` : '' }}</span>
       </p>
     </v-input>
   </div>
@@ -56,8 +56,7 @@
 
     data: () => ({
       dialog: false,
-      clientName: null,
-      clientCPF: '',
+      client: null,
       items: [],
       pageCount: 1,
       inputTimeout: null
@@ -69,10 +68,8 @@
       },
 
       selectClient(value) {
-        console.log(value)
         this.dialog = false
-        this.clientName = value.id.name
-        this.clientCPF = value.id.cpf
+        this.client = value.id
       },
 
       searchClient(e) {
