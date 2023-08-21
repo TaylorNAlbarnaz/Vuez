@@ -6,8 +6,18 @@ export default class ProductsController {
           .then(res => res.data)
      }
 
+     getProductsPaginated(page) {
+          return axios.get(`http://localhost:3000/products?_page=${page}&_limit=8`)
+          .then(res => res.data)
+     }
+
      getProductById(productId) {
           return axios.get('http://localhost:3000/products/' + productId)
+          .then(res => res.data)
+     }
+
+     searchProduct(query) {
+          return axios.get('http://localhost:3000/products?q=' + query)
           .then(res => res.data)
      }
 

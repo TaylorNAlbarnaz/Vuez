@@ -38,9 +38,9 @@
   "products": [
     {
       "name": "Bombom",
-      "price": 5,
-      "totalStock": 200,
-      "currentStock": 199,
+      "price": "5",
+      "totalStock": "200",
+      "currentStock": "199",
       "id": 1
     },
     {

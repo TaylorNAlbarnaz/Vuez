@@ -21,14 +21,14 @@
       width="450px"
     >
       <v-card-title primary-title>
-        Lista de Clientes
+        Escolha um cliente
       </v-card-title>
 
       <v-text-field
         :loading="loading"
         density="compact"
         variant="outlined"
-        label="Search templates"
+        label="pesquisar..."
         append-inner-icon="mdi-magnify"
         single-line
         hide-details
@@ -58,13 +58,13 @@
       dialog: false,
       clientName: null,
       clientCPF: '',
-      pageCount: 2,
       items: [],
+      pageCount: 1,
       inputTimeout: null
     }),
 
     methods: {
-      resetClient () {
+      resetClient() {
         this.clientName = null
       },
 
@@ -88,7 +88,7 @@
         }, 500)
       },
 
-      openClientSelection () {
+      openClientSelection() {
         this.dialog = true
         this.getClientsPaginated(1)
       },
@@ -125,7 +125,7 @@
 
 <style lang="stylus" scoped>
   .client-input
-    border: 1px solid
+    border: 1px solid gainsboro
     user-select: none
     cursor: pointer
     padding: 5px 10px

@@ -12,6 +12,7 @@
         </div>
 
         <SelectClientScreen/>
+        <SelectProductsScreen/>
       </v-col>
     </v-row>
   </v-container>
@@ -20,12 +21,14 @@
 <script>
   //Components
   import SelectClientScreen from '@/components/SelectClientScreen.vue';
+  import SelectProductsScreen from '@/components/SelectProductsScreen.vue';
 
   export default {
     name: 'SellView',
 
     components: {
-      SelectClientScreen
+      SelectClientScreen,
+      SelectProductsScreen
     },
   };
 </script>
