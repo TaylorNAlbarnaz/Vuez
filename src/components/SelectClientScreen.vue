@@ -6,7 +6,10 @@
       hide-details
       @click:append="resetClient"
     >
-      <p @click="openClientSelection"> {{ clientName ? clientName : 'Selecione um cliente' }}</p>
+      <p @click="openClientSelection">
+        {{ clientName ? clientName : 'Selecione um cliente' }}
+        <span> {{ clientName ? `(${clientCPF})` : '' }}</span>
+      </p>
     </v-input>
   </div>
 
@@ -54,6 +57,7 @@
     data: () => ({
       dialog: false,
       clientName: null,
+      clientCPF: '',
       pageCount: 2,
       items: [],
       inputTimeout: null
@@ -63,42 +67,57 @@
       resetClient () {
         this.clientName = null
       },
+
       selectClient(value) {
         console.log(value)
         this.dialog = false
         this.clientName = value.id.name
-
+        this.clientCPF = value.id.cpf
       },
+
       searchClient(e) {
         clearTimeout(this.inputTimeout)
         this.inputTimeout = setTimeout(() => {
           const query = e.srcElement.value
           
-          if (query.length >= 3)
-            console.log(query)
-
-          if (query.length === 0)
-            this.pageCount = 2
-          else
-            this.pageCount = 1
+          if (query.length >= 3) {
+            this.getClientBySearch(query)
+          } else if (query.length === 0) {
+            this.getClientsPaginated(1)
+          }
         }, 500)
       },
+
       openClientSelection () {
         this.dialog = true
         this.getClientsPaginated(1)
       },
+
       async getClientsPaginated(page) {
         const controller = new ClientsController();
         controller.getAllClients()
           .then((res) => {
             this.pageCount = (Math.ceil(res.length / 8))
-            controller.getClientsPaginated(0)
+            controller.getClientsPaginated(page)
               .then((items) => {
-                items = items.map(s => {return {title: s.name, value: {...s}}})
-                this.items = items;
+                this.items = this.formatClientList(items)
               })
           })
+      },
 
+      async getClientBySearch(query) {
+        const controller = new ClientsController();
+        controller.searchClient(query)
+          .then((items) => {
+            this.items = this.formatClientList(items)
+          })
+      },
+
+      formatClientList(items) {
+        return items.map(s => {return {
+          title: `${s.name} - CPF: ${s.cpf}`,
+          value: {...s}
+        }})
       }
     }
   }
@@ -124,6 +143,10 @@
   .client-input p
     width: 100%
     height: 100%
+
+  .client-input span
+    font-weight: 300!important
+    font-style: oblique
 
   .card
     padding: 10px
