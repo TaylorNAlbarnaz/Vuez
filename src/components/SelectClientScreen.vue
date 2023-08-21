@@ -1,0 +1,130 @@
+<template>
+  <div class="client-input" v-ripple>
+    <v-input
+      prepend-icon="mdi-account"
+      :append-icon="clientName ? 'mdi-delete' : ''"
+      hide-details
+      @click:append="resetClient"
+    >
+      <p @click="openClientSelection"> {{ clientName ? clientName : 'Selecione um cliente' }}</p>
+    </v-input>
+  </div>
+
+  <v-dialog
+    v-model="dialog"
+  >
+    <v-card
+      class="mx-auto card"
+      width="450px"
+    >
+      <v-card-title primary-title>
+        Lista de Clientes
+      </v-card-title>
+
+      <v-text-field
+        :loading="loading"
+        density="compact"
+        variant="outlined"
+        label="Search templates"
+        append-inner-icon="mdi-magnify"
+        single-line
+        hide-details
+        height="10"
+        @click:append-inner="onClick"
+        @input="searchClient"
+      ></v-text-field>
+
+      <v-list
+        :items="items"
+        @click:select="selectClient"
+      ></v-list>
+
+      <v-pagination v-if="pageCount > 1" :length="pageCount"></v-pagination>
+    </v-card>
+  </v-dialog>
+</template>
+
+<script>
+  //Controllers
+  import ClientsController from './../controllers/ClientsController'
+
+  export default {
+    name: 'SelectClientScreen',
+
+    data: () => ({
+      dialog: false,
+      clientName: null,
+      pageCount: 2,
+      items: [],
+      inputTimeout: null
+    }),
+
+    methods: {
+      resetClient () {
+        this.clientName = null
+      },
+      selectClient(value) {
+        console.log(value)
+        this.dialog = false
+        this.clientName = value.id.name
+
+      },
+      searchClient(e) {
+        clearTimeout(this.inputTimeout)
+        this.inputTimeout = setTimeout(() => {
+          const query = e.srcElement.value
+          
+          if (query.length >= 3)
+            console.log(query)
+
+          if (query.length === 0)
+            this.pageCount = 2
+          else
+            this.pageCount = 1
+        }, 500)
+      },
+      openClientSelection () {
+        this.dialog = true
+        this.getClientsPaginated(1)
+      },
+      async getClientsPaginated(page) {
+        const controller = new ClientsController();
+        controller.getAllClients()
+          .then((res) => {
+            this.pageCount = (Math.ceil(res.length / 8))
+            controller.getClientsPaginated(0)
+              .then((items) => {
+                items = items.map(s => {return {title: s.name, value: {...s}}})
+                this.items = items;
+              })
+          })
+
+      }
+    }
+  }
+</script>
+
+<style lang="stylus" scoped>
+  .client-input
+    border: 1px solid
+    user-select: none
+    cursor: pointer
+    padding: 5px 10px
+    border-radius: 5px
+    transition: .2s
+
+  .client-input > *
+    color: black
+    font-size: 0.875rem
+    font-weight: 500
+    text-rendering: optimizelegibility
+    text-transform: uppercase
+    letter-spacing: 0.0892857143em
+
+  .client-input p
+    width: 100%
+    height: 100%
+
+  .card
+    padding: 10px
+</style>

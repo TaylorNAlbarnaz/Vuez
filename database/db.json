@@ -1,26 +1,26 @@
 {
   "sellers": [
     {
-      "id": 1,
       "name": "Fulano",
       "email": "fulano@email.com",
       "password": "12345678",
-      "picture": "https://randomuser.me/api/portraits/men/14.jpg"
+      "picture": "https://randomuser.me/api/portraits/men/14.jpg",
+      "id": 1
     },
     {
-      "id": 2,
       "name": "Ciclano",
       "email": "ciclano@email.com",
       "password": "12345678",
-      "picture": "https://randomuser.me/api/portraits/men/19.jpg"
+      "picture": "https://randomuser.me/api/portraits/men/19.jpg",
+      "id": 2
     }
   ],
   "clients": [
     {
-      "id": 1,
       "name": "Deltrano",
       "cpf": "000.000.000-00",
-      "phone": "(99) 99999-9999"
+      "phone": "(99) 99999-9999",
+      "id": 1
     },
     {
       "name": "Suprano",
@@ -37,11 +37,11 @@
   ],
   "products": [
     {
-      "id": 1,
       "name": "Bombom",
       "price": 5,
       "totalStock": 200,
-      "currentStock": 199
+      "currentStock": 199,
+      "id": 1
     },
     {
       "name": "Skate",
@@ -53,19 +53,19 @@
   ],
   "sales": [
     {
-      "id": 1,
       "productId": 1,
-      "quantity": 1
+      "quantity": 1,
+      "id": 1
     }
   ],
   "orders": [
     {
-      "id": 1,
       "sellerId": 1,
       "clientId": 1,
       "saleIds": [
         1
-      ]
+      ],
+      "id": 1
     }
   ]
 }

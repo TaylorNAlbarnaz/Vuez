@@ -12,4 +12,9 @@ export default class OrdersController {
           
           return orders;
      }
+
+     addOrder(order) {
+          return axios.post('http://localhost:3000/orders', {...order})
+          .then(res => res)
+     }
 }
