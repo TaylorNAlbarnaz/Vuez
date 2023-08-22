@@ -25,7 +25,6 @@
       </v-card-title>
 
       <v-text-field
-        :loading="loading"
         density="compact"
         variant="outlined"
         label="pesquisar..."
@@ -33,7 +32,6 @@
         single-line
         hide-details
         height="10"
-        @click:append-inner="onClick"
         @input="searchClient"
       ></v-text-field>
 

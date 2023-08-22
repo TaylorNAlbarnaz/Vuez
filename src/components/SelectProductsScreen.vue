@@ -71,7 +71,6 @@
         </v-card-title>
 
         <v-text-field
-          :loading="loading"
           density="compact"
           variant="outlined"
           label="pesquisar..."
@@ -79,7 +78,6 @@
           single-line
           hide-details
           height="10"
-          @click:append-inner="onClick"
           @input="searchProduct"
         ></v-text-field>
 
@@ -124,9 +122,14 @@
         this.dialog = false
 
         const sale = value.id
-        this.sales.push({
-          ...sale, quantity: 1, basePrice: sale.price, price: Number(sale.price).toFixed(2)
-        })
+        
+        if (this.sales.filter(s => s.id == sale.id).length > 0) {
+          this.sales.filter(s => s.id == sale.id)[0].quantity++
+        } else {
+          this.sales.push({
+            ...sale, quantity: 1, basePrice: sale.price, price: Number(sale.price).toFixed(2)
+          })
+        }
 
         this.recalculateTotalPrice()
       },

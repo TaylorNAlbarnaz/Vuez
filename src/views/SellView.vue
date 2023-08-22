@@ -42,6 +42,9 @@
     methods: {
       finishSale() {
         console.log(this.$refs)
+
+        const products = this.$refs.products.sales
+        console.log(products)
       },
     }
   };
