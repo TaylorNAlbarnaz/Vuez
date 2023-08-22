@@ -25,4 +25,9 @@ export default class ProductsController {
           return axios.post('http://localhost:3000/products', {...product})
           .then(res => res)
      }
+
+     updateProduct(product) {
+          return axios.put('http://localhost:3000/products/' + product.id, {...product})
+          .then(res => res.data)
+     }
 }

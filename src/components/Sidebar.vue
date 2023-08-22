@@ -25,6 +25,7 @@
       density="compact"
       mandatory
       nav
+      v-model:selected="selectedButton"
     >
       <slot></slot>
     </v-list>
@@ -50,8 +51,18 @@ export default {
   data: () => ({
     picture: '',
     name: '',
-    email: ''
+    email: '',
+    selectedButton: ['sales']
   }),
+
+  methods: {
+    updateActiveButton() {
+      setTimeout(() => {
+        const path = this.$router.currentRoute.value.fullPath.substring(1)
+        this.selectedButton = [path]
+      }, 100)
+    }
+  },
 
   props: {
     login: Object
@@ -62,7 +73,14 @@ export default {
       this.picture = newLogin ? newLogin.picture :''
       this.name = newLogin ? newLogin.name :''
       this.email = newLogin ? newLogin.email :''
+    },
+    '$route': function() {
+      this.updateActiveButton()
     }
+  },
+
+  mounted() {
+    this.updateActiveButton()
   }
 }
 </script>

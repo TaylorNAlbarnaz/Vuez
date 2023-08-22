@@ -4,6 +4,10 @@ import SalesView from '../views/SalesView.vue'
 const routes = [
   {
     path: '/',
+    redirect: '/sales'
+  },
+  {
+    path: '/sales',
     name: 'sales',
     component: SalesView
   },
