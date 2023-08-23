@@ -9,26 +9,36 @@
       >
         <p class="txt">Vendas Realizadas: {{ totalSales }}</p>
 
-        <v-table>
-          <thead>
-            <tr>
-              <th class="text-left">Produto</th>
-              <th class="text-left">Quantidade</th>
-              <th class="text-left">Comprador</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="sale in sales"
-              :key="sale.id"
-              :value="sale"
-              >
-              <td>{{ sale.productName }}</td>
-              <td>{{ sale.quantity }}</td>
-              <td>{{ sale.clientName }}</td>
-            </tr>
-          </tbody>
-        </v-table>
+        <v-expansion-panels variant="accordion">
+          <v-expansion-panel
+            v-for="order in orders"
+            :key="order.id"
+          >
+            <v-expansion-panel-title>
+              <b>{{ `${order.clientName}` }}</b>
+              <i>{{ ` - ${order.date}` }}</i>
+            </v-expansion-panel-title>
+
+            <v-expansion-panel-text>
+              <v-table>
+                <tbody>
+                  <tr
+                    v-for="sale in order.sales"
+                    :key="sale.id"
+                  >
+                    <td>{{ `${sale.quantity}x ${sale.productName}` }}</td>
+                    <td>R$ {{ sale.price }}</td>
+                  </tr>
+
+                  <tr>
+                    <td><b>Valor Total: </b></td>
+                    <td>R$ {{ order.totalValue }}</td>
+                  </tr>
+                </tbody>
+              </v-table>
+            </v-expansion-panel-text>
+          </v-expansion-panel>
+        </v-expansion-panels>
 
       </v-col>
     </v-row>
@@ -36,8 +46,6 @@
 </template>
 
 <script>
-  import { onMounted, getCurrentInstance } from "vue";
-  
   //Controllers
   import SalesController from './../controllers/SalesController'
   import ProductsController from './../controllers/ProductsController'
@@ -49,47 +57,58 @@
     
     data: () => ({
       totalSales: 0,
-      sales: []
+      orders: []
     }),
 
     mounted() {
-      this.$emit('loading', true)
-    },
+      this.$emit('loading', false)
 
-    setup() {
-      onMounted(async function() {
-        const data = getCurrentInstance().data;
-        const salesController = new SalesController();
-        const productsController = new ProductsController();
-        const ordersController = new OrdersController();
-        const clientsController = new ClientsController();
+      const salesController = new SalesController();
+      const productsController = new ProductsController();
+      const ordersController = new OrdersController();
+      const clientsController = new ClientsController();
 
-        const login = JSON.parse(localStorage.getItem('login'));
-        if (login) {
-          let orders = await ordersController.getOrdersFromSeller(login.id);
+      const login = JSON.parse(localStorage.getItem('login'));
+      if (login) {
+        ordersController.getOrdersFromSeller(login.id)
+          .then((orders) => {
+            for (const order of orders) {
+              const date = new Date(order.date).toLocaleDateString('en-US')
+              let orderData = {...order, date: date}
 
-          data.sales = await Promise.all(
-            orders.map(async o => {
-              let orderData = {};
+              clientsController.getClientById(order.clientId)
+                .then((client) => {
+                  orderData = {...orderData, clientName: client.name, sales: [], totalValue: 0}
+                  const sales = []
 
-              await Promise.all(o.saleIds.map(async s => {
-                const sale = await salesController.getSaleById(s);
-                const client = await clientsController.getClientById(o.clientId);
-                const product = await productsController.getProductById(sale.productId);
-                
-                orderData.id = o.id;
-                orderData.productName = product.name;
-                orderData.clientName = client.name;
-                orderData.quantity = sale.quantity;
+                  for (const saleId of orderData.saleIds) {
+                    salesController.getSaleById(saleId)
+                      .then((sale) => {
+                        productsController.getProductById(sale.productId)
+                          .then((product) => {
+                            const price = (Number(product.price) * Number(sale.quantity)).toFixed(2) 
 
-                data.totalSales++
-              }))
+                            sales.push({
+                              id: sale.id,
+                              productName: product.name,
+                              quantity: sale.quantity,
+                              price: price
+                            })
 
-              return orderData;
-            })
-          )
+                            orderData = {
+                              ...orderData,
+                              sales: sales,
+                              totalValue: (Number(orderData.totalValue) + Number(price)).toFixed(2)
+                            }
+                            this.orders.push(orderData)
+                            console.log(orderData)
+                          })
+                      })
+                  }
+                })
+            }
+          })
         }
-      })
     },
 
     watch: {

@@ -52,8 +52,9 @@
 
         const sellerId = JSON.parse(localStorage.getItem('login')).id | null;
         const clientId = this.$refs.client.client?.id | null
+        const date = new Date()
+        
         const saleIds = []
-
         const products = this.$refs.products.sales
 
         if (products.length == 0 | !sellerId | !clientId)
@@ -79,7 +80,8 @@
         ordersController.addOrder({
           sellerId: sellerId,
           clientId: clientId,
-          saleIds: saleIds
+          saleIds: saleIds,
+          date: date.toString()
         })
       },
     }
