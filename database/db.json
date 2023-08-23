@@ -40,14 +40,14 @@
       "name": "Bombom",
       "price": "5",
       "totalStock": "200",
-      "currentStock": 199,
+      "currentStock": 196,
       "id": 1
     },
     {
       "name": "Skate",
       "price": "120",
       "totalStock": "50",
-      "currentStock": "50",
+      "currentStock": 49,
       "id": 2
     }
   ],
@@ -56,15 +56,32 @@
       "productId": 1,
       "quantity": 1,
       "id": 1
+    },
+    {
+      "productId": 1,
+      "quantity": 3,
+      "id": 2
+    },
+    {
+      "productId": 2,
+      "quantity": 1,
+      "id": 3
     }
   ],
   "orders": [
     {
       "sellerId": 1,
       "clientId": 1,
-      "saleIds":"[1]",
+      "saleIds": "[1]",
       "date": "Wed Aug 23 2023 13:58:38 GMT-0300 (Horário Padrão de Brasília)",
       "id": 1
+    },
+    {
+      "sellerId": 1,
+      "clientId": 3,
+      "saleIds": "[2,3]",
+      "date": "Wed Aug 23 2023 15:52:54 GMT-0300 (Horário Padrão de Brasília)",
+      "id": 2
     }
   ]
 }

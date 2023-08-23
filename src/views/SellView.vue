@@ -61,28 +61,36 @@
           return;
 
         // Cria as vendas
+        const promises = []
         for (const product of products) {
-          salesController.addSale({
-            productId: product.id,
-            quantity: product.quantity
-          })
-            .then((res) => {
-              saleIds.push(res.data.id)
-              productsController.getProductById(product.id)
-                .then((res) => {
-                  productsController.updateProduct({...res, currentStock: res.currentStock - product.quantity})
-                    .then(() => this.$router.push('sales'))
-                })
+          promises.push(
+            await salesController.addSale({
+              productId: product.id,
+              quantity: product.quantity
             })
+              .then(async (res) => {
+                saleIds.push(res.data.id)
+                promises.push(await productsController.getProductById(product.id)
+                  .then(async(res) => {
+                    promises.push(await productsController.updateProduct({...res, currentStock: res.currentStock - product.quantity})
+                      .then(() => this.$router.push('sales'))
+                    )
+                  })
+                )
+              })
+            )
         }
 
-        //Cria o pedido
-        ordersController.addOrder({
-          sellerId: sellerId,
-          clientId: clientId,
-          saleIds: saleIds,
-          date: date.toString()
-        })
+        Promise.all(promises)
+          .then(() => {
+            //Cria o pedido
+            ordersController.addOrder({
+              sellerId: sellerId,
+              clientId: clientId,
+              saleIds: JSON.stringify(saleIds),
+              date: date.toString()
+            })
+          })
       },
     }
   };

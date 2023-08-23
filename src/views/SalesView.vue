@@ -71,44 +71,51 @@
       const login = JSON.parse(localStorage.getItem('login'));
       if (login) {
         ordersController.getOrdersFromSeller(login.id)
-          .then((orders) => {
+          .then(async (orders) => {
             for (const order of orders) {
               const date = new Date(order.date).toLocaleDateString('en-US')
+              const promises = []
               let orderData = {...order, date: date}
 
-              clientsController.getClientById(order.clientId)
+              promises.push(await clientsController.getClientById(order.clientId)
                 .then((client) => {
                   orderData = {...orderData, clientName: client.name, sales: [], totalValue: 0}
-                  const sales = []
-
-                  for (const saleId of orderData.saleIds) {
-                    salesController.getSaleById(saleId)
-                      .then((sale) => {
-                        productsController.getProductById(sale.productId)
-                          .then((product) => {
-                            const price = (Number(product.price) * Number(sale.quantity)).toFixed(2) 
-
-                            sales.push({
-                              id: sale.id,
-                              productName: product.name,
-                              quantity: sale.quantity,
-                              price: price
-                            })
-
-                            orderData = {
-                              ...orderData,
-                              sales: sales,
-                              totalValue: (Number(orderData.totalValue) + Number(price)).toFixed(2)
-                            }
-                            this.orders.push(orderData)
-                            console.log(orderData)
-                          })
-                      })
-                  }
                 })
+              )
+              
+              const saleIds = JSON.parse(orderData.saleIds)
+              const sales = []
+
+              for (const saleId of saleIds) {
+                promises.push(await salesController.getSaleById(saleId)
+                    .then(async (sale) => {
+                      promises.push(await productsController.getProductById(sale.productId)
+                        .then((product) => {
+                          const price = (Number(product.price) * Number(sale.quantity)).toFixed(2) 
+                          
+                          sales.push({
+                            id: sale.id,
+                            productName: product.name,
+                            quantity: sale.quantity,
+                            price: price
+                          })
+
+                          orderData = {
+                            ...orderData,
+                            sales: sales,
+                            totalValue: (Number(orderData.totalValue) + Number(price)).toFixed(2)
+                          }
+                        })
+                      )
+                    })
+                )
+              }
+
+              Promise.all(promises)
+                .then(() => this.orders.push(orderData))
             }
           })
-        }
+      }
     },
 
     watch: {
