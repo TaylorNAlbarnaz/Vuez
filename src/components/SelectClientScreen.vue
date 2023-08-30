@@ -40,7 +40,12 @@
         @click:select="selectClient"
       ></v-list>
 
-      <v-pagination v-if="pageCount > 1" :length="pageCount"></v-pagination>
+      <v-pagination
+        v-if="pageCount > 1"
+        v-model="page"
+        :length="pageCount"
+        @update:model-value="() => getClientsPaginated(page)"
+      ></v-pagination>
     </v-card>
   </v-dialog>
 </template>
@@ -57,6 +62,7 @@
       client: null,
       items: [],
       pageCount: 1,
+      page: 1,
       inputTimeout: null
     }),
 
