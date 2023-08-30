@@ -86,7 +86,12 @@
           @click:select="selectProduct"
         ></v-list>
 
-        <v-pagination v-if="pageCount > 1" :length="pageCount"></v-pagination>
+        <v-pagination
+          v-if="pageCount > 1"
+          v-model="page"
+          :length="pageCount"
+          @update:model-value="() => getProductsPaginated(page)"
+        ></v-pagination>
       </v-card>
     </v-dialog>
 
@@ -109,6 +114,7 @@
       items: [],
       totalPrice: 0,
       pageCount: 1,
+      page: 1,
       inputTimeout: null
     }),
 
